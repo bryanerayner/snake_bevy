@@ -80,6 +80,32 @@ pub mod game_functions {
                 let cell_size = game.cell_size as f32;
                 let snake_pos = Vec2::new(0.0, -6.0);
                 let last_pos = Vec2::new(-1.0, -6.0);
+
+
+                let snake1_pos = Vec2::new(0.0, 6.0);
+                let last1_pos = Vec2::new(-1.0, 6.0);
+
+
+                commands
+                .spawn(Camera2dComponents::default())
+                .spawn(UiCameraComponents::default())
+                .spawn(SpriteComponents {
+                    material: materials.add(Color::rgb(0.0, 0.0, 1.0).into()),
+                    transform: Transform::from_translation(Vec3::new(0.0, snake_pos.y() * game.cell_size as f32, 0.0)),
+                    sprite: Sprite::new(Vec2::new(cell_size - 2.0, cell_size - 2.0)),
+                    ..Default::default()
+                })
+                .with(Snake { 
+                    player: Players::Player1,
+                    direction: SnakeDirection::RIGHT,
+                    position: snake1_pos,
+                    last_position: last1_pos,
+                    movement_locked: false,
+                    next_move: SnakeDirection::RIGHT
+                })
+                .with(Collider::Snake);
+    
+
                 commands
                     .spawn(Camera2dComponents::default())
                     .spawn(UiCameraComponents::default())
@@ -90,6 +116,7 @@ pub mod game_functions {
                         ..Default::default()
                     })
                     .with(Snake { 
+                        player: Players::Player2,
                         direction: SnakeDirection::RIGHT,
                         position: snake_pos,
                         last_position: last_pos,

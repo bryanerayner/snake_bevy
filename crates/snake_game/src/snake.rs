@@ -28,39 +28,78 @@ pub mod snake_functions {
             }
         }
         for (mut snake, _) in query.iter_mut() {
-            if  keyboard_input.pressed(KeyCode::Left) {
-                match snake.direction {
-                    SnakeDirection::RIGHT => (),
-                    _ => {
+            if snake.player == Players::Player1 {
+                if  keyboard_input.pressed(KeyCode::Left) {
+                    match snake.direction {
+                        SnakeDirection::RIGHT => (),
+                        _ => {
                             snake.next_move = SnakeDirection::LEFT;
                         }
+                    }
+                }
+        
+                if  keyboard_input.pressed(KeyCode::Right) {
+                    match snake.direction {
+                        SnakeDirection::LEFT => (),
+                        _ => {
+                                snake.next_move = SnakeDirection::RIGHT;
+                            }
+                    }
+                }
+        
+                if  keyboard_input.pressed(KeyCode::Down) {
+                    match snake.direction {
+                        SnakeDirection::UP => (),
+                        _ => {
+                                snake.next_move = SnakeDirection::DOWN;
+                            }
+                    }
+                }
+        
+                if  keyboard_input.pressed(KeyCode::Up) {
+                    match snake.direction {
+                        SnakeDirection::DOWN => (),
+                        _ => {
+                                snake.next_move = SnakeDirection::UP;
+                            }
+                    }
                 }
             }
-    
-            if  keyboard_input.pressed(KeyCode::Right) {
-                match snake.direction {
-                    SnakeDirection::LEFT => (),
-                    _ => {
-                            snake.next_move = SnakeDirection::RIGHT;
+            if snake.player == Players::Player2 {
+                if  keyboard_input.pressed(KeyCode::A) {
+                    match snake.direction {
+                        SnakeDirection::RIGHT => (),
+                        _ => {
+                            snake.next_move = SnakeDirection::LEFT;
                         }
+                    }
                 }
-            }
-    
-            if  keyboard_input.pressed(KeyCode::Down) {
-                match snake.direction {
-                    SnakeDirection::UP => (),
-                    _ => {
-                            snake.next_move = SnakeDirection::DOWN;
-                        }
+        
+                if  keyboard_input.pressed(KeyCode::D) {
+                    match snake.direction {
+                        SnakeDirection::LEFT => (),
+                        _ => {
+                                snake.next_move = SnakeDirection::RIGHT;
+                            }
+                    }
                 }
-            }
-    
-            if  keyboard_input.pressed(KeyCode::Up) {
-                match snake.direction {
-                    SnakeDirection::DOWN => (),
-                    _ => {
-                            snake.next_move = SnakeDirection::UP;
-                        }
+        
+                if  keyboard_input.pressed(KeyCode::S) {
+                    match snake.direction {
+                        SnakeDirection::UP => (),
+                        _ => {
+                                snake.next_move = SnakeDirection::DOWN;
+                            }
+                    }
+                }
+        
+                if  keyboard_input.pressed(KeyCode::W) {
+                    match snake.direction {
+                        SnakeDirection::DOWN => (),
+                        _ => {
+                                snake.next_move = SnakeDirection::UP;
+                            }
+                    }
                 }
             }
     
@@ -187,7 +226,14 @@ pub mod snake_data {
     use bevy::prelude::*;
     pub struct Fruit;
 
+    #[derive(Clone, Copy, PartialEq)]
+    pub enum Players {
+        Player1,
+        Player2
+    }
+
     pub struct Snake {
+        pub player: Players,
         pub position: Vec2,
         pub last_position: Vec2,
         pub direction: SnakeDirection,
