@@ -15,8 +15,8 @@ pub mod snake_functions {
         timer.0.tick(time.delta_seconds);
         
         if timer.0.finished && game.playing {
-            grow_tail.send(EventGrowTail{});
             for (mut snake, mut transform) in query.iter_mut() {
+                grow_tail.send(EventGrowTail{});
             
                 snake.last_position = snake.position;
                 match snake.direction {
