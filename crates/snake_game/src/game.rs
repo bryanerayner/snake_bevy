@@ -20,7 +20,7 @@ pub mod game_data {
 pub mod game_functions {
     use bevy::prelude::*;
     use super::game_data::*;
-    use crate::snake::snake_data::*;
+    use crate::snake::{snake_data::*, snake_functions::get_player_color};
 
     pub fn game_over (
         mut commands: Commands,
@@ -90,8 +90,8 @@ pub mod game_functions {
                 .spawn(Camera2dComponents::default())
                 .spawn(UiCameraComponents::default())
                 .spawn(SpriteComponents {
-                    material: materials.add(Color::rgb(0.0, 0.0, 1.0).into()),
-                    transform: Transform::from_translation(Vec3::new(0.0, snake_pos.y() * game.cell_size as f32, 0.0)),
+                    material: materials.add(get_player_color(Players::Player1).into()),
+                    transform: Transform::from_translation(Vec3::new(0.0, snake1_pos.y() * game.cell_size as f32, 0.0)),
                     sprite: Sprite::new(Vec2::new(cell_size - 2.0, cell_size - 2.0)),
                     ..Default::default()
                 })
@@ -110,7 +110,7 @@ pub mod game_functions {
                     .spawn(Camera2dComponents::default())
                     .spawn(UiCameraComponents::default())
                     .spawn(SpriteComponents {
-                        material: materials.add(Color::rgb(0.0, 1.0, 0.0).into()),
+                        material: materials.add(get_player_color(Players::Player2).into()),
                         transform: Transform::from_translation(Vec3::new(0.0, snake_pos.y() * game.cell_size as f32, 0.0)),
                         sprite: Sprite::new(Vec2::new(cell_size - 2.0, cell_size - 2.0)),
                         ..Default::default()

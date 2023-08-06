@@ -8,11 +8,14 @@ pub mod snake_functions {
         mut timer: ResMut<GameTimer>,
         keyboard_input: Res<Input<KeyCode>>,
         mut move_tail: ResMut<Events<EventMoveTail>>,
+        mut grow_tail: ResMut<Events<EventGrowTail>>,
         game: Res<GameState>,
         mut query: Query<(&mut Snake, &mut Transform)>,
     ){
         timer.0.tick(time.delta_seconds);
+        
         if timer.0.finished && game.playing {
+            grow_tail.send(EventGrowTail{});
             for (mut snake, mut transform) in query.iter_mut() {
             
                 snake.last_position = snake.position;
@@ -204,8 +207,11 @@ pub mod snake_functions {
         for _ in grow_reader.iter(&grow_event){
             let cell_size = game.cell_size as f32;
             for snake in snake_query.iter(){
+
+                let snake_color = get_snake_color(snake);
+
                 commands.spawn(SpriteComponents {
-                    material: materials.add(Color::rgb(0.0, 1.0, 0.0).into()),
+                    material: materials.add(snake_color.into()),
                     transform: Transform::from_translation(Vec3::new(
                         snake.last_position.x() * cell_size,
                         snake.last_position.y()  * cell_size,
@@ -220,6 +226,21 @@ pub mod snake_functions {
                     .with(Collider::Tail);
             }
         }
+    }
+
+    
+    pub fn get_player_color(player: Players) -> Color {
+        if player == Players::Player1 {
+            return Color::rgb(0.0, 1.0, 0.0);
+        }
+        else if player == Players::Player2 {
+            return Color::rgb(0.0, 0.0, 1.0);
+        }
+        return Color::rgb(0.0,0.0,0.0);
+    }
+
+    pub fn get_snake_color(snake: &Snake) -> Color {
+        return get_player_color(snake.player);
     }
 }
 pub mod snake_data {
